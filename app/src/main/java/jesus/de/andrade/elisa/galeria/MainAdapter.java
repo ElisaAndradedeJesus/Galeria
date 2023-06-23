@@ -21,9 +21,8 @@ public class MainAdapter extends RecyclerView.Adapter {
         this.photos = photos;
     }
 
-    @NonNull
     @Override
-    public void onCreateViewHolder(@NonNull RecyclerView.viewHolder holder, final int position) {
+    public void onBindViewHolder(@NonNull RecyclerView.viewHolder holder, final int position) {
         ImageView imPhoto = holder.itemView.findViewById(R.id.imItem);
         int w = (int)mainActivity.getResources().getDimension(R.dimen.itemWidth);
         int h = (int)mainActivity.getResources().getDimension(R.dimen.itemHeight);
@@ -39,7 +38,7 @@ public class MainAdapter extends RecyclerView.Adapter {
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+    public void onCreateViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
 
     }
 

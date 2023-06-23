@@ -3,16 +3,18 @@ package jesus.de.andrade.elisa.galeria;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.GridLayout;
-import android.widget.Toolbar;
+
 
 import java.io.File;
 import java.util.ArrayList;
@@ -30,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-//        (┬┬﹏┬┬) God, please help me
+//        (┬┬﹏┬┬) God, help me please
         Toolbar toolbar = findViewById(R.id.tbMain);
         setSupportActionBar(toolbar);
 
@@ -66,5 +68,11 @@ public class MainActivity extends AppCompatActivity {
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    public void startPhotoActivity(String photoPath){
+        Intent i = new Intent(MainActivity.this, PhotoActivity.class);
+        i.putExtra("photo_path",photoPath);
+        startActivity(i);
     }
 }

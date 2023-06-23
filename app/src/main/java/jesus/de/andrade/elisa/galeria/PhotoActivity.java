@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -12,6 +13,8 @@ import android.widget.Toolbar;
 
 
 public class PhotoActivity extends AppCompatActivity {
+
+    String photoPath;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,6 +26,11 @@ public class PhotoActivity extends AppCompatActivity {
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
+
+        Intent i = getIntent();
+        photoPath = i.getStringExtra("photo_path");
+
+
     }
 
     public boolean onCreateOptionsMenu(Menu menu) {
