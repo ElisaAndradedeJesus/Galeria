@@ -10,6 +10,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Toolbar;
 
+import jesus.de.andrade.elisa.galeria.R;
+
 public class PhotoActivity extends AppCompatActivity {
 
     @Override
