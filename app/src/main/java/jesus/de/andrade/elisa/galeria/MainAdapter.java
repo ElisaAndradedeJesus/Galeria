@@ -1,6 +1,8 @@
 package jesus.de.andrade.elisa.galeria;
 
+import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -25,11 +27,13 @@ public class MainAdapter extends RecyclerView.Adapter {
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return null;
+        LayoutInflater inflater = LayoutInflater.from(mainActivity);
+        View v = inflater.inflate(R.layout.list_item,parent,false);
+        return new MyViewHolder(v);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, @SuppressLint("RecyclerView") int position) {
         ImageView imPhoto = holder.itemView.findViewById(R.id.imItem);
         int w = (int)mainActivity.getResources().getDimension(R.dimen.itemWidth);
         int h = (int)mainActivity.getResources().getDimension(R.dimen.itemHeight);
@@ -46,6 +50,6 @@ public class MainAdapter extends RecyclerView.Adapter {
 
     @Override
     public int getItemCount() {
-        return 0;
+        return photos.size();
     }
 }
