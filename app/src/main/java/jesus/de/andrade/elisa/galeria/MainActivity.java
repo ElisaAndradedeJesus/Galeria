@@ -2,15 +2,19 @@ package jesus.de.andrade.elisa.galeria;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.FileProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.icu.text.SimpleDateFormat;
 import android.net.Uri;
 import android.os.Build;
@@ -27,6 +31,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import android.Manifest;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -61,6 +67,11 @@ public class MainActivity extends AppCompatActivity {
         int numberOfColumns = Utils.calculateNoOfColumns(MainActivity.this,w);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(MainActivity.this,numberOfColumns);
         rvGallery.setLayoutManager(gridLayoutManager);
+
+        List<String> permissions = new ArrayList<>();
+        permissions.add(Manifest.permission.CAMERA);
+
+        checkForPermissions(permissions);
     }
 
     public boolean onCreateOptionsMenu(Menu menu){
@@ -132,13 +143,43 @@ public class MainActivity extends AppCompatActivity {
                 permissionsNotGranted.add(permission);
             }
         }
-        if(Buid.VERSION.SDK_INT >= Build.VERSION_CODES.m){
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
             if(permissionsNotGranted.size() > 0) {
-                requestPermissions(permissionsNotGranted.toArray(new String[permissionsNotGranted.size()]));
+                requestPermissions(permissionsNotGranted.toArray(new String[permissionsNotGranted.size()]),RESULT_REQUEST_PERMISSION);
             }
         }
     }
 
     private boolean hasPermission(String permission) {
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
+            return ActivityCompat.checkSelfPermission(MainActivity.this, permission) == PackageManager.PERMISSION_GRANTED;
+        }
+        return false;
+    }
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,@NonNull int[] grantResults){
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        final List<String> permissionsRejected = new ArrayList<>();
+        if(requestCode == RESULT_REQUEST_PERMISSION){
+            for(String permission: permissions){
+                if(!hasPermission(permission)){
+                    permissionsRejected.add(permission);
+                }
+            }
+        }
+        if(permissionsRejected.size() > 0){
+            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
+                if(shouldShowRequestPermissionRationale(permissionsRejected.get(0))){
+                    new AlertDialog.Builder(MainActivity.this).setMessage("Para usar essa app é preciso conceder essas permissões").setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            requestPermissions(permissionsRejected.toArray(new
+                                    String[permissionsRejected.size()]), RESULT_REQUEST_PERMISSION);
+                        }
+                    }).create().show();
+                }
+            }
+        }
     }
 }
